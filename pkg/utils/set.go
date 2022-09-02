@@ -42,7 +42,6 @@ func (s *Set) Entries() []string {
 	for k := range s.m {
 		entries = append(entries, k)
 	}
-
 	return entries
 }
 
