@@ -1,4 +1,4 @@
-# Based on: https://github.com/kubernetes-sigs/cluster-api-provider-openstack/releases/download/v0.6.3/cluster-template.yaml
+---
 apiVersion: v1
 data:
   cacert: ${OPENSTACK_CLOUD_CACERT_B64}
@@ -15,6 +15,9 @@ kind: Cluster
 metadata:
   name: ${CLUSTER_NAME}
   namespace: default
+  labels:
+    ccm: external # labels for ccm
+    cni: calico # labels for cni
 spec:
   clusterNetwork:
     pods:
@@ -52,7 +55,6 @@ spec:
   managedSecurityGroups: true
   allowAllInClusterTraffic: true
   nodeCidr: ${OPENSTACK_NETWORK_CIDR}
-  #disablePortSecurity: true
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KThreesControlPlane
@@ -67,10 +69,9 @@ spec:
   kthreesConfigSpec:
     serverConfig:
       disableComponents:
-        - servicelb
-    # disableComponents:
-    #   # not needed since we're using AWS load balancer (ccm: external)
-    #   - servicelb
+        - servicelb # not needed since we're using Infrastructure providers ex. load balancer (ccm: external)
+        - traefik
+        - flannel
     agentConfig:
       nodeName: "{{ ds.meta_data.local_hostname }}"
     files:
@@ -78,18 +79,17 @@ spec:
         encoding: base64
         owner: root
         path: /etc/kubernetes/cloud.conf
-        permissions: "0600"
+        permissions: "0644" # reading permission to other users
       - content: ${OPENSTACK_CLOUD_CACERT_B64}
         encoding: base64
         owner: root
         path: /etc/certs/cacert
         permissions: "0600"
-    postK3sCommands:
-      - kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
+    #postK3sCommands:
+    # using calico against flannel and traefik
+    #- kubectl --kubeconfig=/etc/rancher/k3s/k3s.yaml apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
   replicas: 1
-  #version: ${KUBERNETES_VERSION}
-  #version: v1.21.5+k3s2
-  version: v${KUBERNETES_VERSION}+k3s2
+  version: v${KUBERNETES_VERSION}
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
 kind: OpenStackMachineTemplate
@@ -116,13 +116,11 @@ spec:
   clusterName: ${CLUSTER_NAME}
   replicas: ${WORKER_MACHINE_COUNT:=1}
   selector:
-    matchLabels:
+    matchLabels: null
   template:
     spec:
       clusterName: ${CLUSTER_NAME}
-      #version: ${KUBERNETES_VERSION}
-      #version: v1.21.5+k3s2
-      version: v${KUBERNETES_VERSION}+k3s2
+      version: v${KUBERNETES_VERSION}
       failureDomain: ${OPENSTACK_FAILURE_DOMAIN:=nova}
       bootstrap:
         configRef:
