@@ -49,6 +49,14 @@
    $ ./4.create-cluster.sh
    ```
    생성된 클러스터 매니페이스 파일을 kubectl로 적용해서 Workload 클러스터 생성
+5. workload's kubeconfig 추출
+   ```shell
+   $ ./5.get_kubeconfig.sh
+   ```
+   생성된 클러스터에 대한 접근을 위한 kubeconfig 파일 구성
+   ```shell
+   $ kubectl get nodes --kubeconfig ./kubeconfig
+   ```
 
 ## Cluster 반복 실행 (100개)
 

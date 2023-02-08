@@ -58,3 +58,7 @@
    ```shell
    $ ./6.get_kubeconfig.sh
    ```
+   생성된 클러스터에 대한 접근을 위한 kubeconfig 파일 구성
+   ```shell
+   $ kubectl get nodes --kubeconfig ./kubeconfig
+   ```
