@@ -1,3 +1,4 @@
 #!/bin/bash
 
-clusterctl get kubeconfig k3s-os-cluster > ./kubeconfig  
+source ./cluster-template-openstack.rc
+clusterctl get kubeconfig ${CLUSTER_NAME} > ./kubeconfig  
