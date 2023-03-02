@@ -1,0 +1,49 @@
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: MachineDeployment
+metadata:
+  annotations:
+    machinedeployment.clusters.x-k8s.io/revision: "1"
+  creationTimestamp: "2023-03-02T06:48:31Z"
+  generation: 1
+  labels:
+    cluster.x-k8s.io/cluster-name: os-ka-upd
+  name: os-ka-upd-w
+  namespace: default
+  ownerReferences:
+  - apiVersion: cluster.x-k8s.io/v1beta1
+    kind: Cluster
+    name: os-ka-upd
+    uid: e706dbcd-a59d-496f-ad28-50a42e752bd2
+spec:
+  clusterName: os-ka-upd
+  minReadySeconds: 0
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: os-ka-upd
+      cluster.x-k8s.io/deployment-name: os-ka-upd-w
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: os-ka-upd
+        cluster.x-k8s.io/deployment-name: os-ka-upd-w
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          kind: KubeadmConfigTemplate
+          name: os-ka-upd-w
+      clusterName: os-ka-upd
+      failureDomain: nova
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
+        kind: OpenStackMachineTemplate
+        name: os-ka-upd-w-v1-24-5
+      version: v1.24.5

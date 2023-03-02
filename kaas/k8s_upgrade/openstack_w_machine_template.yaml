@@ -1,0 +1,15 @@
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
+kind: OpenStackMachineTemplate
+metadata:
+  name: os-ka-upd-w-v1-24-5
+  namespace: default
+spec:
+  template:
+    spec:
+      cloudName: openstack
+      flavor: m1.small
+      identityRef:
+        kind: Secret
+        name: os-ka-upd-cloud-config
+      image: ubuntu-2004-kube-v1.24.5
+      sshKeyName: sunmi

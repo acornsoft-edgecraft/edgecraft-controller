@@ -57,3 +57,4 @@ go.work
 .DS_Store
 
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode
+kaas/k8s_upgrade/ubuntu-2004-kube-v1.24.5
