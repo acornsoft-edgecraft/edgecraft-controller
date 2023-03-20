@@ -19,9 +19,9 @@ spec:
     pods:
       cidrBlocks:
         - ${POD_CIDR}
-    # services:
-    #   cidrBlocks:
-    #     - ${SVC_CIDR}
+    services:
+      cidrBlocks:
+        - ${SVC_CIDR}
     serviceDomain: cluster.local
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
@@ -41,9 +41,8 @@ spec:
   apiServerLoadBalancer:
     enabled: false
   cloudName: ${OPENSTACK_CLOUD}
-  # dnsNameservers:
-  #   - ${OPENSTACK_DNS_NAMESERVERS}
-  dnsNameservers: []
+  dnsNameservers:
+    - ${OPENSTACK_DNS_NAMESERVERS}
   externalNetworkId: ${OPENSTACK_EXTERNAL_NETWORK_ID}
   identityRef:
     kind: Secret
@@ -59,16 +58,11 @@ metadata:
   namespace: default
 spec:
   controlPlaneConfig:
-    # clusterConfiguration:
-    #   portCompatibilityRemap: true
     initConfiguration:
       addons:
         - dns
         - ingress
-      #httpProxy: ""
-      #httpsProxy: ""
-      #noProxy: ""
-      joinTokenTTLInSecs: 9000
+      #joinTokenTTLInSecs: 9000
   machineTemplate:
     infrastructureTemplate:
       apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
@@ -143,9 +137,3 @@ spec:
   template:
     spec:
       {}
-      # clusterConfiguration:
-      #   portCompatibilityRemap: true
-      # initConfiguration:
-      #   httpProxy: ""
-      #   httpsProxy: ""
-      #   noProxy: ""
