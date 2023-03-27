@@ -1,18 +1,18 @@
 apiVersion: v1
 data:
   cacert: Cg==
-  clouds.yaml: Y2xvdWRzOgogIG9wZW5zdGFjazoKICAgIGF1dGg6CiAgICAgIGF1dGhfdXJsOiBodHRwOi8vMTkyLjE2OC43Ny4xMS9pZGVudGl0eQogICAgICB1c2VybmFtZTogInN1bm1pIgogICAgICBwYXNzd29yZDogImZrZmZrNDQ4IgogICAgICBwcm9qZWN0X2lkOiA1NDJlN2EwNGY2OTE0ODI5YjQzZTc3ZjllZjEyYjc3OQogICAgICBwcm9qZWN0X25hbWU6ICJlZGdlY3JhZnQiCiAgICAgIHVzZXJfZG9tYWluX25hbWU6ICJEZWZhdWx0IgogICAgcmVnaW9uX25hbWU6ICJSZWdpb25PbmUiCiAgICBpbnRlcmZhY2U6ICJwdWJsaWMiCiAgICBpZGVudGl0eV9hcGlfdmVyc2lvbjogMwo=
+  clouds.yaml: Y2xvdWRzOgogIG9wZW5zdGFjazoKICAgIGF1dGg6CiAgICAgIGF1dGhfdXJsOiBodHRwOi8vMTkyLjE2OC44OC4xMTo1MDAwL3YzLwogICAgICB1c2VybmFtZTogImVkZ2VjcmFmdCIKICAgICAgcGFzc3dvcmQ6ICJQYXNzMDAwMEAiCiAgICAgIHByb2plY3RfaWQ6IDNiNjZiNjlhOGQyNDQxNzA4ZDE3NzNjN2NmNDlkZTI1CiAgICAgIHByb2plY3RfbmFtZTogImVkZ2VjcmFmdC10ZXN0IgogICAgICB1c2VyX2RvbWFpbl9uYW1lOiAiRGVmYXVsdCIKICAgIHJlZ2lvbl9uYW1lOiAiUmVnaW9uT25lIgogICAgaW50ZXJmYWNlOiAicHVibGljIgogICAgaWRlbnRpdHlfYXBpX3ZlcnNpb246IDM=
 kind: Secret
 metadata:
   labels:
     clusterctl.cluster.x-k8s.io/move: "true"
-  name: os-mk8s-mirror-cloud-config
+  name: os-mk8s-pure-cloud-config
   namespace: default
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
-  name: os-mk8s-mirror
+  name: os-mk8s-pure
   namespace: default
 spec:
   clusterNetwork:
@@ -26,16 +26,16 @@ spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
     kind: MicroK8sControlPlane
-    name: os-mk8s-mirror-control-plane
+    name: os-mk8s-pure-control-plane
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
     kind: OpenStackCluster
-    name: os-mk8s-mirror
+    name: os-mk8s-pure
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
 kind: OpenStackCluster
 metadata:
-  name: os-mk8s-mirror
+  name: os-mk8s-pure
   namespace: default
 spec:
   allowAllInClusterTraffic: true
@@ -47,45 +47,33 @@ spec:
   externalNetworkId: public
   identityRef:
     kind: Secret
-    name: os-mk8s-mirror-cloud-config
+    name: os-mk8s-pure-cloud-config
   managedSecurityGroups: true
   nodeCidr: 10.6.0.0/24
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: MicroK8sControlPlane
 metadata:
-  name: os-mk8s-mirror-control-plane
+  name: os-mk8s-pure-control-plane
   namespace: default
 spec:
   controlPlaneConfig:
-    clusterConfiguration:
-      portCompatibilityRemap: true
     initConfiguration:
       addons:
       - dns
       - ingress
-      extraWriteFiles:
-      - content: |
-          server = \"https://192.168.77.29\"
-
-          [host.\"192.168.77.29\"]
-          capabilities = [\"pull\", \"resolve\"]
-        owner: root:root
-        path: /var/snap/microk8s/current/args/certs.d/docker.io/hosts.toml
-        permissions: "0400"
-      joinTokenTTLInSecs: 900000
   machineTemplate:
     infrastructureTemplate:
       apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
       kind: OpenStackMachineTemplate
-      name: os-mk8s-mirror-control-plane
+      name: os-mk8s-pure-control-plane
   replicas: 1
   version: v1.23.3
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
 kind: OpenStackMachineTemplate
 metadata:
-  name: os-mk8s-mirror-control-plane
+  name: os-mk8s-pure-control-plane
   namespace: default
 spec:
   template:
@@ -94,17 +82,17 @@ spec:
       flavor: m1.medium
       identityRef:
         kind: Secret
-        name: os-mk8s-mirror-cloud-config
-      image: Ubuntu20.04
-      sshKeyName: sunmi
+        name: os-mk8s-pure-cloud-config
+      image: Ubuntu2004-Official
+      sshKeyName: hostacloud
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
-  name: os-mk8s-mirror-md-0
+  name: os-mk8s-pure-md-0
   namespace: default
 spec:
-  clusterName: os-mk8s-mirror
+  clusterName: os-mk8s-pure
   replicas: 1
   selector:
     matchLabels: null
@@ -114,19 +102,19 @@ spec:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: MicroK8sConfigTemplate
-          name: os-mk8s-mirror-md-0
-      clusterName: os-mk8s-mirror
+          name: os-mk8s-pure-md-0
+      clusterName: os-mk8s-pure
       failureDomain: nova
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
         kind: OpenStackMachineTemplate
-        name: os-mk8s-mirror-md-0
+        name: os-mk8s-pure-md-0
       version: v1.23.3
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
 kind: OpenStackMachineTemplate
 metadata:
-  name: os-mk8s-mirror-md-0
+  name: os-mk8s-pure-md-0
   namespace: default
 spec:
   template:
@@ -135,17 +123,15 @@ spec:
       flavor: m1.medium
       identityRef:
         kind: Secret
-        name: os-mk8s-mirror-cloud-config
-      image: Ubuntu20.04
-      sshKeyName: sunmi
+        name: os-mk8s-pure-cloud-config
+      image: Ubuntu2004-Official
+      sshKeyName: hostacloud
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: MicroK8sConfigTemplate
 metadata:
-  name: os-mk8s-mirror-md-0
+  name: os-mk8s-pure-md-0
   namespace: default
 spec:
   template:
-    spec:
-      clusterConfiguration:
-        portCompatibilityRemap: true
+    spec: {}

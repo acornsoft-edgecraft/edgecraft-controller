@@ -62,23 +62,7 @@ spec:
       addons:
         - dns
         - ingress
-      joinTokenTTLInSecs: 900000
-      #httpProxy: "${CONTAINERD_HTTP_PROXY:=}"
-      #httpsProxy: "${CONTAINERD_HTTPS_PROXY:=}"
-      #noProxy: "${CONTAINERD_NO_PROXY:=}"
-      #riskLevel: "${SNAP_RISKLEVEL:=}"
-      #confinement: "${SNAP_CONFINEMENT:=}"
-      extraWriteFiles:
-        - owner: root:root
-          path: /var/snap/microk8s/current/args/certs.d/docker.io/hosts.toml
-          permissions: "0400"
-          content: |
-            server = \"https://192.168.77.29\"
-
-            [host.\"192.168.77.29\"]
-            capabilities = [\"pull\", \"resolve\"]
-    clusterConfiguration:
-      portCompatibilityRemap: true
+      # joinTokenTTLInSecs: 9000
   machineTemplate:
     infrastructureTemplate:
       apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
@@ -86,7 +70,6 @@ spec:
       name: ${CLUSTER_NAME}-control-plane
   replicas: ${CONTROL_PLANE_MACHINE_COUNT}
   version: v${KUBERNETES_VERSION}
-  #upgradeStrategy: "${UPGRADE_STRATEGY}"
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha5
 kind: OpenStackMachineTemplate
@@ -152,12 +135,4 @@ metadata:
   namespace: default
 spec:
   template:
-    spec:
-      clusterConfiguration:
-        portCompatibilityRemap: true
-      #initConfiguration:
-        #httpProxy: "${CONTAINERD_HTTP_PROXY:=}"
-        #httpsProxy: "${CONTAINERD_HTTPS_PROXY:=}"
-        #noProxy: "${CONTAINERD_NO_PROXY:=}"
-        #riskLevel: "${SNAP_RISKLEVEL:=}"
-        #confinement: "${SNAP_CONFINEMENT:=}"
+    spec: {}
