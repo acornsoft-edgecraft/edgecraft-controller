@@ -68,15 +68,6 @@ spec:
       #noProxy: "${CONTAINERD_NO_PROXY:=}"
       #riskLevel: "${SNAP_RISKLEVEL:=}"
       #confinement: "${SNAP_CONFINEMENT:=}"
-      extraWriteFiles:
-        - owner: root:root
-          path: /var/snap/microk8s/current/args/certs.d/docker.io/hosts.toml
-          permissions: "0400"
-          content: |
-            server = \"https://192.168.77.29\"
-
-            [host.\"192.168.77.29\"]
-            capabilities = [\"pull\", \"resolve\"]
     clusterConfiguration:
       portCompatibilityRemap: true
   machineTemplate:
@@ -156,8 +147,8 @@ spec:
       clusterConfiguration:
         portCompatibilityRemap: true
       #initConfiguration:
-        #httpProxy: "${CONTAINERD_HTTP_PROXY:=}"
-        #httpsProxy: "${CONTAINERD_HTTPS_PROXY:=}"
-        #noProxy: "${CONTAINERD_NO_PROXY:=}"
-        #riskLevel: "${SNAP_RISKLEVEL:=}"
-        #confinement: "${SNAP_CONFINEMENT:=}"
+      #httpProxy: "${CONTAINERD_HTTP_PROXY:=}"
+      #httpsProxy: "${CONTAINERD_HTTPS_PROXY:=}"
+      #noProxy: "${CONTAINERD_NO_PROXY:=}"
+      #riskLevel: "${SNAP_RISKLEVEL:=}"
+      #confinement: "${SNAP_CONFINEMENT:=}"
