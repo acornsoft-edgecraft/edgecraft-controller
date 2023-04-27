@@ -1,0 +1,52 @@
+apiVersion: addons.cluster.x-k8s.io/v1alpha1
+kind: HelmChartProxy
+metadata:
+  name: velero
+spec:
+  clusterSelector:
+    matchLabels:
+      veleroChart: enabled
+  repoURL: https://vmware-tanzu.github.io/helm-charts
+  chartName: velero
+  namespace: velero
+  valuesTemplate: |
+    image:
+      repository: velero/velero
+      tag: v1.11.0
+      pullPolicy: IfNotPresent
+      imagePullSecrets: []
+    initContainers:
+      - name: velero-velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.6.1
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
+    configuration:
+      backupStorageLocation:
+        - name: default
+          provider: aws
+          bucket: velero
+          caCert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUI0akNDQVltZ0F3SUJBZ0lRVDJzeU8zM3dvNnljTXhicXlnU2FiakFLQmdncWhrak9QUVFEQWpBek1Sd3cKR2dZRFZRUUtFeE5EWlhKMFoyVnVJRVJsZG1Wc2IzQnRaVzUwTVJNd0VRWURWUVFMREFweWIyOTBRRzFwYm1sdgpNQjRYRFRJek1EUXdOakEyTXpnMU5sb1hEVEkwTURRd05UQTJNemcxTmxvd016RWNNQm9HQTFVRUNoTVRRMlZ5CmRHZGxiaUJFWlhabGJHOXdiV1Z1ZERFVE1CRUdBMVVFQ3d3S2NtOXZkRUJ0YVc1cGJ6QlpNQk1HQnlxR1NNNDkKQWdFR0NDcUdTTTQ5QXdFSEEwSUFCTDdiNlRZUEVPeFRQbzZsbGdBRTliS0N6MFFZSnNtYnVDb1lsNHR4V3JUVQoxOGtxUUdkSUhSZ1kvUlQ2eWc2Ni84NWk5L0JHSDlLdFVzNGFWZUFSR2tPamZ6QjlNQTRHQTFVZER3RUIvd1FFCkF3SUNwREFUQmdOVkhTVUVEREFLQmdnckJnRUZCUWNEQVRBUEJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWQKRGdRV0JCVEg5ajdkWFV2cElkOEhOZHNoZHU2NnpqWEJwakFtQmdOVkhSRUVIekFkZ2hWdGFXNXBieTVyTXk1aApZMjl5Ym5OdlpuUXVhVytIQk1Db1RUd3dDZ1lJS29aSXpqMEVBd0lEUndBd1JBSWdMZnczaWJQV2tkZ0V2TzFwCkROTmtrbHVBWmo1eFR2c0IwVWNNZExNV0NnY0NJRENzaVpENDkxT3psd1R4dm80K2JYRk40RmFzTUM3TzFycXMKS2xJQUxPeVAKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+          config:
+            region: minio
+            s3ForcePathStyle: true
+            publicUrl: https://192.168.77.60:9000
+            s3Url: https://192.168.77.60:9000
+      volumeSnapshotLocation:
+        - name: default
+          provider: aws
+          config:
+            region: minio
+    credentials: 
+      useSecret: true
+      name: cloud-credentials
+      secretContents:
+        cloud: |
+          [default]
+          aws_access_key_id = minioadmin
+          aws_secret_access_key = minioadmin
+    backupEnabled: true
+    snaphostsEnabled: true
+    deployNodeAgent: true
+    defaultVolumesToFsBackup: true

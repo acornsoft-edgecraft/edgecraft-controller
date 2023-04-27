@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kubectl apply -f ./mk8s-os-cluster.yaml
+kubectl apply -f ./$1.yaml
