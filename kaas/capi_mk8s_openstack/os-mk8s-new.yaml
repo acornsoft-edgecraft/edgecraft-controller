@@ -14,15 +14,18 @@ kind: Cluster
 metadata:
   name: os-mk8s-new
   namespace: default
+  labels:
+    dashboardChart: enabled
+    veleroChart: enabled
 spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-      - 10.96.0.1/12
+        - 10.96.0.1/12
     serviceDomain: cluster.local
     services:
       cidrBlocks:
-      - 10.96.0.0/12
+        - 10.96.0.0/12
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
     kind: MicroK8sControlPlane
@@ -43,7 +46,7 @@ spec:
     enabled: false
   cloudName: openstack
   dnsNameservers:
-  - 168.126.63.1
+    - 168.126.63.1
   externalNetworkId: public
   identityRef:
     kind: Secret
@@ -62,8 +65,8 @@ spec:
       portCompatibilityRemap: true
     initConfiguration:
       addons:
-      - dns
-      - ingress
+        - dns
+        - ingress
       joinTokenTTLInSecs: 900000
   machineTemplate:
     infrastructureTemplate:

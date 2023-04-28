@@ -1,45 +1,8 @@
 apiVersion: velero.io/v1
 kind: Restore
 metadata:
-  creationTimestamp: "2023-04-26T08:06:38Z"
-  generation: 20
-  managedFields:
-    - apiVersion: velero.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:spec:
-          .: {}
-          f:backupName: {}
-          f:hooks: {}
-          f:includedNamespaces: {}
-          f:preserveNodePorts: {}
-        f:status: {}
-      manager: velero
-      operation: Update
-      time: "2023-04-26T08:06:38Z"
-    - apiVersion: velero.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:spec:
-          f:excludedResources: {}
-          f:itemOperationTimeout: {}
-        f:status:
-          f:completionTimestamp: {}
-          f:phase: {}
-          f:progress:
-            .: {}
-            f:itemsRestored: {}
-            f:totalItems: {}
-          f:startTimestamp: {}
-          f:warnings: {}
-      manager: velero-server
-      operation: Update
-      time: "2023-04-26T08:58:42Z"
   name: os-mk8s-restore
   namespace: velero
-  resourceVersion: "10496"
-  selfLink: /apis/velero.io/v1/namespaces/velero/restores/os-mk8s-restore
-  uid: 5ae313c8-5f7f-4de4-806d-0effb8691c8c
 spec:
   backupName: os-mk8s-backup
   excludedResources:
@@ -55,13 +18,11 @@ spec:
   hooks: {}
   includedNamespaces:
     - "*"
+  excludedNamespaces:
+    - kube-system
+    - kube-node-lease
+    - kube-public
+    - kubernetes-dashboard
+    - velero
   itemOperationTimeout: 1h0m0s
   preserveNodePorts: true
-status:
-  completionTimestamp: "2023-04-26T08:58:42Z"
-  phase: Completed
-  progress:
-    itemsRestored: 191
-    totalItems: 191
-  startTimestamp: "2023-04-26T08:06:38Z"
-  warnings: 83

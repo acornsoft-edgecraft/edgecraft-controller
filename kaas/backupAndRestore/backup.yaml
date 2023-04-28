@@ -1,71 +1,18 @@
 apiVersion: velero.io/v1
 kind: Backup
 metadata:
-  annotations:
-    velero.io/source-cluster-k8s-gitversion: v1.23.17-2+40cc20cc310518
-    velero.io/source-cluster-k8s-major-version: "1"
-    velero.io/source-cluster-k8s-minor-version: 23+
-  creationTimestamp: "2023-04-26T06:55:00Z"
-  generation: 4
   labels:
     velero.io/storage-location: default
-  managedFields:
-    - apiVersion: velero.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:spec:
-          .: {}
-          f:defaultVolumesToFsBackup: {}
-          f:excludedNamespaces: {}
-          f:hooks: {}
-          f:includeClusterResources: {}
-          f:includedNamespaces: {}
-          f:metadata: {}
-          f:snapshotVolumes: {}
-        f:status: {}
-      manager: velero
-      operation: Update
-      time: "2023-04-26T06:55:00Z"
-    - apiVersion: velero.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            .: {}
-            f:velero.io/source-cluster-k8s-gitversion: {}
-            f:velero.io/source-cluster-k8s-major-version: {}
-            f:velero.io/source-cluster-k8s-minor-version: {}
-          f:labels:
-            .: {}
-            f:velero.io/storage-location: {}
-        f:spec:
-          f:csiSnapshotTimeout: {}
-          f:itemOperationTimeout: {}
-          f:storageLocation: {}
-          f:ttl: {}
-          f:volumeSnapshotLocations: {}
-        f:status:
-          f:completionTimestamp: {}
-          f:expiration: {}
-          f:formatVersion: {}
-          f:phase: {}
-          f:startTimestamp: {}
-          f:version: {}
-          f:warnings: {}
-      manager: velero-server
-      operation: Update
-      time: "2023-04-26T06:55:17Z"
   name: os-mk8s-backup
   namespace: velero
-  resourceVersion: "4504617"
-  selfLink: /apis/velero.io/v1/namespaces/velero/backups/os-mk8s-backup
-  uid: 9c911503-5d2b-4069-b989-336590ae0ddf
 spec:
   csiSnapshotTimeout: 10m0s
   defaultVolumesToFsBackup: true
   excludedNamespaces:
     - kube-system
     - kube-node-lease
+    - kube-public
+    - kubernetes-dashboard
     - velero
   hooks: {}
   includeClusterResources: true
@@ -78,11 +25,3 @@ spec:
   ttl: 720h0m0s
   volumeSnapshotLocations:
     - default
-status:
-  completionTimestamp: "2023-04-26T06:55:17Z"
-  expiration: "2023-05-26T06:55:00Z"
-  formatVersion: 1.1.0
-  phase: Completed
-  startTimestamp: "2023-04-26T06:55:00Z"
-  version: 1
-  warnings: 1
