@@ -16,8 +16,6 @@ spec:
     - velero
   hooks: {}
   includeClusterResources: true
-  includedNamespaces:
-    - "*"
   itemOperationTimeout: 1h0m0s
   metadata: {}
   snapshotVolumes: true

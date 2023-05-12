@@ -1,0 +1,15 @@
+apiVersion: addons.cluster.x-k8s.io/v1alpha1
+kind: HelmChartProxy
+metadata:
+  name: csi-driver-nfs
+spec:
+  clusterSelector:
+    matchLabels:
+      csiNfsChart: enabled
+  repoURL: https://ccambo.github.io/helm-charts/stable
+  chartName: csi-driver-nfs
+  namespace: kube-system
+  valuesTemplate: |
+    nfs:
+      server: 192.168.77.11
+      path: /data/nfs/edgecraft

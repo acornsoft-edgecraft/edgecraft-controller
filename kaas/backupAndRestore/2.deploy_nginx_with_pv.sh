@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kubectl apply -f ./install_velero/nginx-app/with-pv.yaml --kubeconfig ./os-mk8s-kubeconfig
+kubectl apply -f ./install_velero/nginx-app/with-pv.yaml --kubeconfig ./$1_kubeconfig

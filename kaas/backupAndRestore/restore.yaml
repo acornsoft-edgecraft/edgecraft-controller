@@ -16,8 +16,6 @@ spec:
     - volumeattachments.storage.k8s.io
     - backuprepositories.velero.io
   hooks: {}
-  includedNamespaces:
-    - "*"
   excludedNamespaces:
     - kube-system
     - kube-node-lease

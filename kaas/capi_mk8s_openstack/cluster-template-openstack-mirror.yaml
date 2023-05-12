@@ -70,6 +70,28 @@ spec:
       #confinement: "${SNAP_CONFINEMENT:=}"
       extraWriteFiles:
         - owner: root:root
+          path: /etc/docker/certs.d/192.168.77.29/ca.crt
+          permissions: "0444"
+          content: |
+            -----BEGIN CERTIFICATE-----
+            MIIC2TCCAcGgAwIBAgIUGF0daFVB62zkrwaMip/nHcXyzh0wDQYJKoZIhvcNAQEL
+            BQAwFDESMBAGA1UEAwwJaGFyYm9yLWNhMB4XDTIwMTEyMDA2MDQyNVoXDTMwMTEx
+            ODA2MDQyNVowFDESMBAGA1UEAwwJaGFyYm9yLWNhMIIBIjANBgkqhkiG9w0BAQEF
+            AAOCAQ8AMIIBCgKCAQEA3U7qT6q12MDgEc7F97rdKXL5QtoDmikyR4WoEwZyn72M
+            0WNObjWEfFgz3MxJWezZJJ2on0OVAGUd73D7jZYB/bw//fGeGHehzb029vLe83vJ
+            3/Yg3iikWVf0aklqcCW/8uWujmwEKoYlPCB6oo2CMYoTxLy6KUJhXJaysZXqFZSJ
+            jjGLKqbo4vg3BKaW4JsWczaOOAcpX2uoLQUDkt2yP2zvAmrjKw6+6OhUwNU7m7hv
+            O7gaaGDTSDNrZMoSXQwCQSnq6OzWkfvtSOKtsjtgg99d29hHXE6udaO+ljV4csWo
+            9zt0zKIuq+LkWBnaDilWupaog3BA31PBP6sfZDPIKQIDAQABoyMwITAPBgNVHRMB
+            Af8EBTADAQH/MA4GA1UdDwEB/wQEAwICpDANBgkqhkiG9w0BAQsFAAOCAQEAfokz
+            bpDpzXE+h3A+TwVnXGEbMFzsYJDKdQX1Ho+e07yC3wAlOu6JdbRwvUcOfB3zt5J4
+            de3KQFr4Dq9CUaYIxBuqQVPg4UCB5jLw4f/MIVQ80KfB3e8kXtlbqDgAWSBdsEY+
+            heGZXZIeMXrdAIhc6BkGq6CdxMAtiDtyyhq0eIx9/KT+D+YikCzcpWJTMaIFAOC8
+            hPy+HHSgm/J5Q7XIsa+xO5OF27Xqs44VbCB4TSR5BKeTABKyXhrn9hjUj7NMNKzA
+            g/hHoQp7IOpUaTXghrzoUg1pZHFW3Bdk0LAyayYs7zP0Wr1Hny1Yb65XJ+eVdTO7
+            qkLOqN2Iw03OYwr3gQ==
+            -----END CERTIFICATE-----
+        - owner: root:root
           path: /var/snap/microk8s/current/args/certs.d/docker.io/hosts.toml
           permissions: "0400"
           content: |
@@ -156,8 +178,8 @@ spec:
       clusterConfiguration:
         portCompatibilityRemap: true
       #initConfiguration:
-        #httpProxy: "${CONTAINERD_HTTP_PROXY:=}"
-        #httpsProxy: "${CONTAINERD_HTTPS_PROXY:=}"
-        #noProxy: "${CONTAINERD_NO_PROXY:=}"
-        #riskLevel: "${SNAP_RISKLEVEL:=}"
-        #confinement: "${SNAP_CONFINEMENT:=}"
+      #httpProxy: "${CONTAINERD_HTTP_PROXY:=}"
+      #httpsProxy: "${CONTAINERD_HTTPS_PROXY:=}"
+      #noProxy: "${CONTAINERD_NO_PROXY:=}"
+      #riskLevel: "${SNAP_RISKLEVEL:=}"
+      #confinement: "${SNAP_CONFINEMENT:=}"

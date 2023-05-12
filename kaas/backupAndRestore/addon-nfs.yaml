@@ -13,3 +13,10 @@ spec:
     nfs:
       server: 192.168.77.11
       path: /data/nfs/edgecraft
+      mountOptions:
+        - hard
+        - nfsvers=4.1
+    storageClass:
+      create: true
+      defaultClass: true
+      name: nfs-client

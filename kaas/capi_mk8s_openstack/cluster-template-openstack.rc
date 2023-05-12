@@ -17,7 +17,8 @@ export OPENSTACK_FAILURE_DOMAIN="nova"
 
 # OpenStack machine conifugrations
 # export OPENSTACK_IMAGE_NAME=Ubuntu2004-Official
-export OPENSTACK_IMAGE_NAME=Ubuntu20.04
+# export OPENSTACK_IMAGE_NAME=Ubuntu20.04
+export OPENSTACK_IMAGE_NAME=capi_microk8s_nfs
 export OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR=m1.medium
 export OPENSTACK_NODE_MACHINE_FLAVOR=m1.medium
 export OPENSTACK_SSH_KEY_NAME=sunmi
