@@ -46,7 +46,7 @@ export UPGRADE_STRATEGY=SmartUpgrade
 #    "openstack_cloud_cacert_b64":"Cg==",
 #    "dns_nameservers":"168.126.63.1",
 #    "failure_domain":"nova",
-#    "image_name":"ubuntu-2004-kube-v1.23.3",
+#    "image_name":"capi_microk8s_nfs",
 #    "ssh_key_name":"sunmi",
 #    "external_network_id":"public",
 #    "api_server_floating_ip":"",
