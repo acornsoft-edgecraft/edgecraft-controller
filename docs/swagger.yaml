@@ -1,0 +1,1488 @@
+basePath: /api/v1
+definitions:
+  common.BootstrapProvider:
+    enum:
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-varnames:
+    - Kubeadm
+    - MicroK8s
+    - K3s
+  model.BackResParam:
+    properties:
+      backres_uid:
+        type: string
+      name:
+        type: string
+    type: object
+  model.BaremetalHostInfo:
+    properties:
+      bmc_address:
+        example: 98:03:9b:61:80:48
+        type: string
+      boot_mac_address:
+        example: 00:b2:8c:ee:22:98
+        type: string
+      boot_mode:
+        example: 1
+        type: integer
+      external_provisioning:
+        example: false
+        type: boolean
+      host_name:
+        example: sadf
+        type: string
+      online_power:
+        example: false
+        type: boolean
+    type: object
+  model.BaremetalInfo:
+    properties:
+      image_checksum:
+        example: http://192.168.0.1/ubuntu.qcow2.md5sum
+        type: string
+      image_checksum_type:
+        example: 1
+        type: integer
+      image_format:
+        example: 2
+        type: integer
+      image_url:
+        example: http://192.168.0.1/ubuntu.qcow2
+        type: string
+      namespace:
+        example: default
+        type: string
+      password:
+        example: asdf
+        type: string
+      secret_name:
+        example: secret1
+        type: string
+      user_name:
+        example: asdf
+        type: string
+    type: object
+  model.CloudInfo:
+    properties:
+      cloud_uid:
+        example: ""
+        type: string
+      desc:
+        example: Baremtal cloud
+        type: string
+      name:
+        example: test cloud
+        type: string
+      status:
+        example: 1
+        type: integer
+      type:
+        example: 1
+        type: integer
+    type: object
+  model.CloudSet:
+    properties:
+      cloud:
+        $ref: '#/definitions/model.CloudInfo'
+      cluster:
+        $ref: '#/definitions/model.ClusterInfo'
+      etcd_storage:
+        $ref: '#/definitions/model.EtcdStorageInfo'
+      nodes:
+        $ref: '#/definitions/model.NodesInfo'
+      openstack:
+        $ref: '#/definitions/model.OpenstackInfo'
+      save_only:
+        type: boolean
+    type: object
+  model.ClusterInfo:
+    properties:
+      baremetal:
+        $ref: '#/definitions/model.BaremetalInfo'
+      cluster_uid:
+        example: ""
+        type: string
+      k8s:
+        $ref: '#/definitions/model.KubernetesInfo'
+      status:
+        type: integer
+    type: object
+  model.Code:
+    properties:
+      code:
+        example: 1
+        type: integer
+      desc:
+        example: Test Code for Testing
+        type: string
+      display_order:
+        example: 0
+        type: integer
+      group_id:
+        example: TestGroup
+        type: string
+      name:
+        example: 'TestCode #1'
+        type: string
+      use_yn:
+        example: true
+        type: boolean
+    type: object
+  model.CodeGroup:
+    properties:
+      desc:
+        example: Code Group Testing
+        type: string
+      group_id:
+        example: TestGroup
+        type: string
+      use_yn:
+        example: true
+        type: boolean
+    type: object
+  model.EtcdInfo:
+    properties:
+      ca_file:
+        example: ""
+        type: string
+      cert_file:
+        example: ""
+        type: string
+      endpoints:
+        items:
+          $ref: '#/definitions/model.UrlInfo'
+        type: array
+      key_file:
+        example: ""
+        type: string
+      use_external_etcd:
+        example: false
+        type: boolean
+    type: object
+  model.EtcdStorageInfo:
+    properties:
+      etcd:
+        $ref: '#/definitions/model.EtcdInfo'
+      storage_class:
+        $ref: '#/definitions/model.StorageClassInfo'
+    type: object
+  model.ExtraConfig:
+    properties:
+      files:
+        example: ""
+        type: string
+      format:
+        example: ""
+        type: string
+      ntp:
+        example: ""
+        type: string
+      post_kubeadm_commands:
+        example: kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
+        type: string
+      pre_kubeadm_commands:
+        example: ""
+        type: string
+      users:
+        example: ""
+        type: string
+    type: object
+  model.K8sUpgradeInfo:
+    properties:
+      image:
+        type: string
+      version:
+        type: integer
+    type: object
+  model.KubernetesInfo:
+    properties:
+      bootstrap_provider:
+        allOf:
+        - $ref: '#/definitions/common.BootstrapProvider'
+        example: 1
+      cp_kubeadm_extra_config:
+        $ref: '#/definitions/model.ExtraConfig'
+      pod_cidr:
+        example: 10.96.0.1/12
+        type: string
+      svc_cidr:
+        example: 10.96.0.0/12
+        type: string
+      svc_domain:
+        example: cluster.local
+        type: string
+      version:
+        example: 3
+        type: integer
+      worker_kubeadm_extra_config:
+        $ref: '#/definitions/model.ExtraConfig'
+    type: object
+  model.Login:
+    properties:
+      email:
+        example: ccambo@acornsoft.io
+        type: string
+      password:
+        example: 1234abcd@Acorn
+        type: string
+    type: object
+  model.NodeInfo:
+    properties:
+      ip_address:
+        example: sadf
+        type: string
+      labels:
+        items: {}
+        type: array
+      node_name:
+        example: sadf
+        type: string
+    type: object
+  model.NodeSetInfo:
+    properties:
+      flavor:
+        example: m1.medium
+        type: string
+      labels:
+        items: {}
+        type: array
+      name:
+        example: ""
+        type: string
+      node_count:
+        example: 1
+        type: integer
+      nodeset_uid:
+        example: ""
+        type: string
+    type: object
+  model.NodeSpecificInfo:
+    properties:
+      baremetalHost:
+        $ref: '#/definitions/model.BaremetalHostInfo'
+      node:
+        $ref: '#/definitions/model.NodeInfo'
+      node_uid:
+        example: ""
+        type: string
+      type:
+        example: 1
+        type: integer
+    type: object
+  model.NodesInfo:
+    properties:
+      loadbalancer_address:
+        example: ""
+        type: string
+      loadbalancer_port:
+        example: ""
+        type: string
+      master_nodes:
+        items:
+          $ref: '#/definitions/model.NodeSpecificInfo'
+        type: array
+      use_loadbalancer:
+        example: false
+        type: boolean
+      worker_nodes:
+        items:
+          $ref: '#/definitions/model.NodeSpecificInfo'
+        type: array
+    type: object
+  model.OpenstackClusterInfo:
+    properties:
+      cluster_uid:
+        example: ""
+        type: string
+      created:
+        type: string
+      desc:
+        example: 'Openstack Test Cluster #1'
+        type: string
+      name:
+        example: os-test-1
+        type: string
+      namespace:
+        example: default
+        type: string
+      status:
+        type: integer
+    type: object
+  model.OpenstackClusterSet:
+    properties:
+      cluster:
+        $ref: '#/definitions/model.OpenstackClusterInfo'
+      etcd_storage:
+        $ref: '#/definitions/model.EtcdStorageInfo'
+      k8s:
+        $ref: '#/definitions/model.KubernetesInfo'
+      nodes:
+        $ref: '#/definitions/model.OpenstackNodeSetInfo'
+      openstack:
+        $ref: '#/definitions/model.OpenstackInfo'
+      save_only:
+        type: boolean
+    type: object
+  model.OpenstackInfo:
+    properties:
+      api_server_floating_ip:
+        example: ""
+        type: string
+      bastion_flavor:
+        example: ""
+        type: string
+      bastion_floating_ip:
+        example: ""
+        type: string
+      bastion_image_name:
+        example: ""
+        type: string
+      bastion_ssh_key_name:
+        example: ""
+        type: string
+      dns_nameservers:
+        example: 168.126.63.1
+        type: string
+      external_network_id:
+        description: public
+        example: ""
+        type: string
+      failure_domain:
+        description: nova
+        example: ""
+        type: string
+      image_name:
+        example: ubuntu-2004-kube-v1.23.3
+        type: string
+      node_cidr:
+        example: 10.96.0.0/24
+        type: string
+      openstack_cloud:
+        example: openstack
+        type: string
+      openstack_cloud_cacert_b64:
+        example: Cg==
+        type: string
+      openstack_cloud_provider_conf_b64:
+        example: W0dsb2JhbF0KYXV0aC11cmw9aHR0cDovLzE5Mi4xNjguNzcuMTEvaWRlbnRpdHkKdXNlcm5hbWU9InN1bm1pIgpwYXNzd29yZD0iZmtmZms0NDgiCnRlbmFudC1pZD0iNTQyZTdhMDRmNjkxNDgyOWI0M2U3N2Y5ZWYxMmI3NzkiCnRlbmFudC1uYW1lPSJlZGdlY3JhZnQiCmRvbWFpbi1uYW1lPSJEZWZhdWx0IgpyZWdpb249IlJlZ2lvbk9uZSIK
+        type: string
+      openstack_cloud_yaml_b64:
+        example: Y2xvdWRzOgogIG9wZW5zdGFjazoKICAgIGF1dGg6CiAgICAgIGF1dGhfdXJsOiBodHRwOi8vMTkyLjE2OC43Ny4xMS9pZGVudGl0eQogICAgICB1c2VybmFtZTogInN1bm1pIgogICAgICBwYXNzd29yZDogImZrZmZrNDQ4IgogICAgICBwcm9qZWN0X2lkOiA1NDJlN2EwNGY2OTE0ODI5YjQzZTc3ZjllZjEyYjc3OQogICAgICBwcm9qZWN0X25hbWU6ICJlZGdlY3JhZnQiCiAgICAgIHVzZXJfZG9tYWluX25hbWU6ICJEZWZhdWx0IgogICAgcmVnaW9uX25hbWU6ICJSZWdpb25PbmUiCiAgICBpbnRlcmZhY2U6ICJwdWJsaWMiCiAgICBpZGVudGl0eV9hcGlfdmVyc2lvbjogMwo=
+        type: string
+      ssh_key_name:
+        example: sunmi
+        type: string
+      use_bastion_host:
+        example: false
+        type: boolean
+    type: object
+  model.OpenstackNodeSetInfo:
+    properties:
+      master_sets:
+        items:
+          $ref: '#/definitions/model.NodeSetInfo'
+        type: array
+      use_loadbalancer:
+        example: false
+        type: boolean
+      worker_sets:
+        items:
+          $ref: '#/definitions/model.NodeSetInfo'
+        type: array
+    type: object
+  model.StorageClassInfo:
+    properties:
+      label1:
+        example: ""
+        type: string
+      label2:
+        example: ""
+        type: string
+      label3:
+        example: ""
+        type: string
+      use_ceph:
+        example: false
+        type: boolean
+    type: object
+  model.UrlInfo:
+    properties:
+      ip_address:
+        example: ""
+        type: string
+      port:
+        example: ""
+        type: string
+    type: object
+  response.ReturnData:
+    properties:
+      code:
+        type: integer
+      data: {}
+      isError:
+        type: boolean
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: EdgeCraft Swagger API
+  version: 0.1.0
+paths:
+  /auth:
+    post:
+      description: User Login
+      operationId: Login
+      parameters:
+      - description: Request json
+        in: body
+        name: loginInfo
+        required: true
+        schema:
+          $ref: '#/definitions/model.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: Login
+      tags:
+      - Auth
+  /clouds:
+    get:
+      description: Get all cloud list
+      operationId: GetCloudList
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCloudList
+      tags:
+      - Cloud
+    post:
+      description: Register cloud
+      operationId: SetCloud
+      parameters:
+      - description: Cloud Set
+        in: body
+        name: cloudSet
+        required: true
+        schema:
+          $ref: '#/definitions/model.CloudSet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetCloud
+      tags:
+      - Cloud
+  /clouds/{cloudId}:
+    delete:
+      description: Delete cloud
+      operationId: DeleteCloud
+      parameters:
+      - description: cloudId
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteCloud
+      tags:
+      - Cloud
+    get:
+      description: Get specific cloud
+      operationId: GetCloud
+      parameters:
+      - description: cloudId
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCloud
+      tags:
+      - Cloud
+    put:
+      description: Update cloud
+      operationId: UpdateCloud
+      parameters:
+      - description: cloudId
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cloud Set
+        in: body
+        name: cloudSet
+        required: true
+        schema:
+          $ref: '#/definitions/model.CloudSet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpdateCloud
+      tags:
+      - Cloud
+  /clouds/{cloudId}/clusters:
+    get:
+      description: 전체 클러스터 리스트 (Openstack)
+      operationId: GetClusterList
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetClusterList
+      tags:
+      - Openstack-Cluster
+    post:
+      description: 클러스터 추가 (Openstack)
+      operationId: SetCluster
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Openstack Cluster Info
+        in: body
+        name: OpenstackClusterSet
+        required: true
+        schema:
+          $ref: '#/definitions/model.OpenstackClusterSet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetCluster
+      tags:
+      - Openstack-Cluster
+  /clouds/{cloudId}/clusters/{clusterId}:
+    delete:
+      description: 클러스터 삭제 (Openstack)
+      operationId: DeleteCluster
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteCluster
+      tags:
+      - Openstack-Cluster
+    get:
+      description: 클러스터 상세 조회 (Openstack)
+      operationId: GetCluster
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCluster
+      tags:
+      - Openstack-Cluster
+    post:
+      description: 저장된 클러스터 정보를 이용해서 Provision 처리 (Openstack)
+      operationId: ProvisioningCluster
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: ProvisioningCluster
+      tags:
+      - Openstack-Cluster
+    put:
+      description: 클러스터 수정 (Openstack)
+      operationId: UpdateCluster
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: Openstack Cluster Info
+        in: body
+        name: OpenstackClusterSet
+        required: true
+        schema:
+          $ref: '#/definitions/model.OpenstackClusterSet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpdateCluster
+      tags:
+      - Openstack-Cluster
+  /clouds/{cloudId}/clusters/{clusterId}/backup:
+    get:
+      description: 클러스터의 백업 리스트
+      operationId: GetBackupList
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetBackupList
+      tags:
+      - Openstack-Cluster-Backup
+    post:
+      description: 클러스터의 백업 실행 (Velero)
+      operationId: SetBackup
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: BackResParam
+        in: body
+        name: backresParam
+        required: true
+        schema:
+          $ref: '#/definitions/model.BackResParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetBackup
+      tags:
+      - Openstack-Cluster-Backup
+  /clouds/{cloudId}/clusters/{clusterId}/backup/{backresId}:
+    delete:
+      description: 클러스터의 백업 삭제
+      operationId: DeleteBackup
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: BackRes ID
+        in: path
+        name: backresId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteBackup
+      tags:
+      - Openstack-Cluster-Backup
+  /clouds/{cloudId}/clusters/{clusterId}/benchmarks:
+    get:
+      description: 클러스터 Benchmarks 결과 리스트 (Openstack)
+      operationId: GetBenchmarksList
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetBenchmarksList
+      tags:
+      - Openstack-Cluster-Benchmarks
+    post:
+      description: 클러스터에 CIS Benchmarks 실행 (Openstack)
+      operationId: SetBenchmarks
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetBenchmarks
+      tags:
+      - Openstack-Cluster-Benchmarks
+  /clouds/{cloudId}/clusters/{clusterId}/benchmarks/{benchmarksId}:
+    get:
+      description: 클러스터 Benchmarks 결과 상세 조회 (Openstack)
+      operationId: GetBenchmarks
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: Benchmarks ID
+        in: path
+        name: benchmarksId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetBenchmarks
+      tags:
+      - Openstack-Cluster-Benchmarks
+  /clouds/{cloudId}/clusters/{clusterId}/nodesets:
+    get:
+      description: 클러스터의 NodeSet 리스트 (Openstack)
+      operationId: GetNodeSetList
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetNodeSetList
+      tags:
+      - Openstack-Cluster-NodeSet
+    post:
+      description: 클러스터에 NodeSet 추가 (Openstack)
+      operationId: SetNodeSet
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: NodeSet Info
+        in: body
+        name: NodeSet
+        required: true
+        schema:
+          $ref: '#/definitions/model.NodeSetInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetNodeSet
+      tags:
+      - Openstack-Cluster-NodeSet
+  /clouds/{cloudId}/clusters/{clusterId}/nodesets/{nodeSetId}:
+    delete:
+      description: 클러스터의 NodeSet 삭제 (Openstack)
+      operationId: DeleteNodeSet
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: NodeSet ID
+        in: path
+        name: nodeSetId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteNodeSet
+      tags:
+      - Openstack-Cluster-NodeSet
+    get:
+      description: 클러스터의 NodeSet 상세 (Openstack)
+      operationId: GetNodeSet
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: NodeSet ID
+        in: path
+        name: nodeSetId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetNodeSet
+      tags:
+      - Openstack-Cluster-NodeSet
+  /clouds/{cloudId}/clusters/{clusterId}/nodesets/{nodeSetId}/{nodeCount}:
+    get:
+      description: 클러스터의 NodeSet에 NodeCount 갱신 (Openstack)
+      operationId: UpdateNodeCount
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: NodeSet ID
+        in: path
+        name: nodeSetId
+        required: true
+        type: string
+      - description: NodeCount
+        in: path
+        name: nodeCount
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpdateNodeCount
+      tags:
+      - Openstack-Cluster-NodeSet
+  /clouds/{cloudId}/clusters/{clusterId}/restore:
+    get:
+      description: 클러스터의 복원 리스트
+      operationId: GetRestoreList
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetRestoreList
+      tags:
+      - Openstack-Cluster-Restore
+    post:
+      description: 클러스터의 복원 실행 (Velero)
+      operationId: SetRestore
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: BackResParam
+        in: body
+        name: backresParam
+        required: true
+        schema:
+          $ref: '#/definitions/model.BackResParam'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetRestore
+      tags:
+      - Openstack-Cluster-Restore
+  /clouds/{cloudId}/clusters/{clusterId}/restore/{backresId}:
+    delete:
+      description: 클러스터의 복원 삭제
+      operationId: DeleteRestore
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: BackRes ID
+        in: path
+        name: backresId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteRestore
+      tags:
+      - Openstack-Cluster-Restore
+  /clouds/{cloudId}/clusters/{clusterId}/upgrade:
+    post:
+      description: 저장된 클러스터 정보를 이용해서 K8s Version Upgrade 처리 (Openstack)
+      operationId: UpgradeClusterK8sVersion
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Cluster ID
+        in: path
+        name: clusterId
+        required: true
+        type: string
+      - description: Openstack Cluster K8s Upgrade Info
+        in: body
+        name: K8sUpgradeInfo
+        required: true
+        schema:
+          $ref: '#/definitions/model.K8sUpgradeInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpgradeClusterK8sVersion
+      tags:
+      - Openstack-Cluster
+  /clouds/{cloudId}/nodes:
+    get:
+      description: 클라우드에 속한 노드 리스트 조회
+      operationId: GetCloudNodeList
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCloudNodeList
+      tags:
+      - CloudNode
+    post:
+      description: 클라우드에 노드 등록
+      operationId: SetCloudNode
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Node Specific Info
+        in: body
+        name: node
+        required: true
+        schema:
+          $ref: '#/definitions/model.NodeSpecificInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetCloudNode
+      tags:
+      - CloudNode
+  /clouds/{cloudId}/nodes/{nodeId}:
+    delete:
+      description: 클라우드의 노드 삭제
+      operationId: DeleteCloudNode
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Node ID
+        in: path
+        name: nodeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteCloudNode
+      tags:
+      - CloudNode
+    get:
+      description: 클라우드에 속한 노드 상세정보 조회
+      operationId: GetCloudNode
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Node ID
+        in: path
+        name: nodeId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCloudNode
+      tags:
+      - CloudNode
+    put:
+      description: 클라우드의 노드 수정
+      operationId: UpdateCloudNode
+      parameters:
+      - description: Cloud ID
+        in: path
+        name: cloudId
+        required: true
+        type: string
+      - description: Node ID
+        in: path
+        name: nodeId
+        required: true
+        type: string
+      - description: Nodes Info
+        in: body
+        name: node
+        required: true
+        schema:
+          $ref: '#/definitions/model.NodeSpecificInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpdateCloudNode
+      tags:
+      - CloudNode
+  /codes:
+    get:
+      description: Get all code list
+      operationId: GetCodeList
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCodeList
+      tags:
+      - Code
+    post:
+      description: Register code
+      operationId: SetCode
+      parameters:
+      - description: Code
+        in: body
+        name: code
+        required: true
+        schema:
+          $ref: '#/definitions/model.Code'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetCode
+      tags:
+      - Code
+    put:
+      description: Update code
+      operationId: UpdateCode
+      parameters:
+      - description: Code
+        in: body
+        name: code
+        required: true
+        schema:
+          $ref: '#/definitions/model.Code'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpdateCode
+      tags:
+      - Code
+  /codes/{groupId}:
+    get:
+      description: Get codes by group
+      operationId: GetCodeListByGroup
+      parameters:
+      - description: Code Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCodeListByGroup
+      tags:
+      - Code
+  /codes/{groupId}/{code}:
+    delete:
+      description: Delete code
+      operationId: DeleteCode
+      parameters:
+      - description: Code Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      - description: Code
+        in: path
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteCode
+      tags:
+      - Code
+    get:
+      description: Get code
+      operationId: GetCode
+      parameters:
+      - description: Code Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      - description: Code
+        in: path
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCode
+      tags:
+      - Code
+  /codes/groups:
+    get:
+      description: Get all code-group list
+      operationId: GetCodeGroupList
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCodeGroupList
+      tags:
+      - CodeGroup
+    post:
+      description: Register code group
+      operationId: SetCodeGroup
+      parameters:
+      - description: Code Group
+        in: body
+        name: codeGroup
+        required: true
+        schema:
+          $ref: '#/definitions/model.CodeGroup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: SetCodeGroup
+      tags:
+      - CodeGroup
+    put:
+      description: Update code group
+      operationId: UpdateCodeGroup
+      parameters:
+      - description: Code Group
+        in: body
+        name: codeGroup
+        required: true
+        schema:
+          $ref: '#/definitions/model.CodeGroup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: UpdateCodeGroup
+      tags:
+      - CodeGroup
+  /codes/groups/{groupId}:
+    delete:
+      description: Delete code group and codes belong to
+      operationId: DeleteCodeGroup
+      parameters:
+      - description: Code Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: DeleteCodeGroup
+      tags:
+      - CodeGroup
+    get:
+      description: Get code group
+      operationId: GetCodeGroup
+      parameters:
+      - description: Code Group ID
+        in: path
+        name: groupId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: GetCodeGroup
+      tags:
+      - CodeGroup
+  /health:
+    get:
+      description: for health check
+      operationId: health-check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ReturnData'
+      summary: Health check k8s-api-gateway
+      tags:
+      - Common
+schemes:
+- http
+- https
+swagger: "2.0"
